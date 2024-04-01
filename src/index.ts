@@ -1,6 +1,9 @@
+import { createServer } from 'http'
+import dotenv from 'dotenv'
 import express from 'express'
 import proxy from 'express-http-proxy'
-import dotenv from 'dotenv'
+import setUpApi from './routes/api'
+import setUpSocket from './socket'
 
 dotenv.config()
 
@@ -21,16 +24,17 @@ const LISTEN_HOST = process.env.LISTEN_HOST || '127.0.0.1'
 const VITE_DEV_PORT = getListenPort('VITE_DEV_PORT', 9999)
 
 const app = express()
+const server = createServer(app)
 
-// Useful things you might want:
-//app.use(express.urlencoded({ extended: true }));
+setUpSocket(server)
+setUpApi(app)
 
 // Proxy web requests to the Vite dev server.
 if (process.env.DEV_CLIENT_SERVER) {
   app.use(proxy(`http://localhost:${VITE_DEV_PORT}`))
 }
 
-app.listen(LISTEN_PORT, LISTEN_HOST, () => {
+server.listen(LISTEN_PORT, LISTEN_HOST, () => {
   console.log(`Listening on ${LISTEN_HOST}:${LISTEN_PORT}`)
   console.log(`http://localhost:${LISTEN_PORT}`)
 })
