@@ -6,7 +6,7 @@ export default function setUpApi(app: Application) {
   //app.use('/api', express.urlencoded({ extended: true }))
 
   app.get('/api/test/ping', (_req, res) => {
-    res.send(200).send({ message: 'Pong.' })
+    res.send({ message: 'Pong.' })
   })
 
   app.get('/api/test/pg', withPg(async (client, _req, res) => {
