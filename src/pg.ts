@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { Pool, PoolClient } from 'pg'
 
 export const pool = new Pool()
